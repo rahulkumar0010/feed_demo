@@ -12,7 +12,7 @@ export default function UploadIcon() {
       viewBox="0 0 486.3 486.3"
       
     >
-      <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+      <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
       <g
         id="SVGRepo_tracerCarrier"
         strokeLinecap="round"
