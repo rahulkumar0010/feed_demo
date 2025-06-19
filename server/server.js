@@ -18,13 +18,9 @@ app.get("/posts", (req, res) => {
 
   let startIndex = (page - 1 || 0) * limit;
 
-  console.log("startIndex", startIndex);
-  console.log("limit", startIndex);
-
   const paginatedPosts = posts.slice(startIndex, startIndex + limit);
-  const nextCursor =
-    startIndex + limit < posts.length ? posts[startIndex + limit - 1].id : null;
-
+  const nextCursor =posts.length/limit>page? page+1:null
+    
   res.json({
     posts: paginatedPosts,
     nextPage: nextCursor,

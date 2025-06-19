@@ -54,7 +54,7 @@ export default function FeedPage() {
     const observer = new IntersectionObserver(
       (entries) => {
         if (entries[0].isIntersecting) {
-          // fetchNextPage();
+          fetchNextPage();
         }
       },
       { threshold: 1 }
