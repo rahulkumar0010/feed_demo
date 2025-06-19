@@ -2,12 +2,14 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 
+const BASE_URL= process.env.NEXT_PUBLIC_BASE_URL;
+
 export default function PostCard({ post }) {
   const queryClient = useQueryClient();
 
   const likeMutation = useMutation({
     mutationFn: (postId) =>
-      axios.post(`http://localhost:4000/posts/${postId}/like`),
+      axios.post(`${BASE_URL}/posts/${postId}/like`),
 
     onMutate: async (postId) => {
       await queryClient.cancelQueries(["posts"]);

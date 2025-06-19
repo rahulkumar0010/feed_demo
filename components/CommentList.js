@@ -3,17 +3,19 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import { useState } from 'react';
 
+const BASE_URL= process.env.NEXT_PUBLIC_BASE_URL;
+
 export default function CommentList({ postId }) {
   const queryClient = useQueryClient();
   const [text, setText] = useState('');
 
   const { data } = useQuery({
     queryKey: ['comments', postId],
-    queryFn: () => axios.get(`http://localhost:4000/posts/${postId}/comments`).then(res => res.data),
+    queryFn: () => axios.get(`${BASE_URL}/posts/${postId}/comments`).then(res => res.data),
   });
 
   const commentMutation = useMutation({
-    mutationFn: (newComment) => axios.post(`http://localhost:4000/posts/${postId}/comments`, newComment),
+    mutationFn: (newComment) => axios.post(`${BASE_URL}/posts/${postId}/comments`, newComment),
     onSuccess: () => queryClient.invalidateQueries(['comments', postId])
   });
 

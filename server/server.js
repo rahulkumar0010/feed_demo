@@ -1,5 +1,5 @@
-const express = require('express');
-const cors = require('cors');
+const express = require("express");
+const cors = require("cors");
 const app = express();
 const PORT = 4000;
 
@@ -12,13 +12,14 @@ let comments = {};
 let postId = 1;
 
 // Get all posts
-app.get('/posts', (req, res) => {
+app.get("/posts", (req, res) => {
   const limit = parseInt(req.query.limit) || 5;
-  const page = parseInt(req.query.page)||1;
+  const page = parseInt(req.query.page) || 1;
 
-  let startIndex = (page-1||0)*limit;
+  let startIndex = (page - 1 || 0) * limit;
 
- 
+  console.log("startIndex", startIndex);
+  console.log("limit", startIndex);
 
   const paginatedPosts = posts.slice(startIndex, startIndex + limit);
   const nextCursor =
@@ -31,7 +32,7 @@ app.get('/posts', (req, res) => {
 });
 
 // Create a post
-app.post('/posts', (req, res) => {
+app.post("/posts", (req, res) => {
   const { content } = req.body;
   const newPost = { id: postId++, content, likes: 0 };
   posts.unshift(newPost);
@@ -39,25 +40,25 @@ app.post('/posts', (req, res) => {
 });
 
 // Like a post
-app.post('/posts/:id/like', (req, res) => {
+app.post("/posts/:id/like", (req, res) => {
   const id = parseInt(req.params.id);
-  const post = posts.find(p => p.id === id);
+  const post = posts.find((p) => p.id === id);
   if (post) {
     post.likes += 1;
     res.json({ success: true, likes: post.likes });
   } else {
-    res.status(404).json({ error: 'Post not found' });
+    res.status(404).json({ error: "Post not found" });
   }
 });
 
 // Get comments for a post
-app.get('/posts/:id/comments', (req, res) => {
+app.get("/posts/:id/comments", (req, res) => {
   const id = req.params.id;
   res.json(comments[id] || []);
 });
 
 // Add a comment to a post
-app.post('/posts/:id/comments', (req, res) => {
+app.post("/posts/:id/comments", (req, res) => {
   const id = req.params.id;
   const { text } = req.body;
 
