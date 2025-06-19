@@ -58,7 +58,9 @@ export default function PostCard({ post }) {
           className="rounded-full mr-3"
         />
         <div>
-          <h3 className="font-semibold text-gray-800">{post.author||"Rahul"}</h3>
+          <h3 className="font-semibold text-gray-800">
+            {post.author || "Rahul"}
+          </h3>
           <p className="text-xs text-gray-500">
             {post.timestamp || "Just now"}
           </p>
@@ -68,8 +70,9 @@ export default function PostCard({ post }) {
       <div className="mb-3 relative w-full h-[300px]">
         <Image
           src={
-            post.image ||
-            "https://www.hitachimoneyspotatm.com/wp-content/uploads/2024/01/Article_1_f946e17f-14ef-4856-8f11-6d6670e7492e.webp"
+            post.image
+              ? BASE_URL + post.image
+              : "https://www.hitachimoneyspotatm.com/wp-content/uploads/2024/01/Article_1_f946e17f-14ef-4856-8f11-6d6670e7492e.webp"
           }
           alt="Post image"
           fill

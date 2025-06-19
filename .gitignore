@@ -42,3 +42,4 @@ next-env.d.ts
 
 # Server
 server/node_modules
+server/uploads

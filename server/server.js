@@ -1,10 +1,34 @@
 const express = require("express");
 const cors = require("cors");
+const multer = require("multer");
+const path = require("path");
+const fs = require("fs");
+
 const app = express();
 const PORT = 4000;
 
 app.use(cors());
 app.use(express.json());
+
+const uploadDir = path.join(__dirname, "uploads");
+
+if (!fs.existsSync(uploadDir)) {
+  fs.mkdirSync(uploadDir);
+}
+app.use('/uploads', express.static(uploadDir));
+
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, uploadDir);
+  },
+  filename: (req, file, cb) => {
+    const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
+    const ext = path.extname(file.originalname);
+    cb(null, file.fieldname + "-" + uniqueSuffix + ext);
+  },
+});
+
+const upload = multer({ storage });
 
 // In-memory data
 let posts = [];
@@ -19,8 +43,8 @@ app.get("/posts", (req, res) => {
   let startIndex = (page - 1 || 0) * limit;
 
   const paginatedPosts = posts.slice(startIndex, startIndex + limit);
-  const nextCursor =posts.length/limit>page? page+1:null
-    
+  const nextCursor = posts.length / limit > page ? page + 1 : null;
+
   res.json({
     posts: paginatedPosts,
     nextPage: nextCursor,
@@ -28,9 +52,11 @@ app.get("/posts", (req, res) => {
 });
 
 // Create a post
-app.post("/posts", (req, res) => {
+app.post("/posts", upload.single("image"), (req, res) => {
   const { content } = req.body;
-  const newPost = { id: postId++, content, likes: 0 };
+  const imageUrl = req.file ? `/uploads/${req.file.filename}` : null;
+
+  const newPost = { id: postId++, content, likes: 0, image: imageUrl };
   posts.unshift(newPost);
   res.status(201).json(newPost);
 });
